@@ -19,11 +19,11 @@ def ChordIdent():
     ('A#', False), 
     ('B', False)
 )
-    W2 = tk.Tk()
-    W2.geometry("500x500")
+    ChordIwindow = tk.Tk()
+    ChordIwindow.geometry("500x500")
 
     tk.Label(text="*ALL CHORDS WILL BE MADE WITH SHARPS, THIS IDENTIFIER SHALL NOT RECOGNIZE FLATS*").pack()
-    tk.Label(text="to begin using the program, select one of the two below buttons.").pack()
+    tk.Label(text="select notes,to make a chord").pack()
 
     CButton = tk.Button(text="C")
     CButton.pack()
@@ -61,6 +61,11 @@ def ChordIdent():
     BButton = tk.Button(text="B")
     BButton.pack()
 
+def ChordProg():
+    window.destroy()
+    ChordProgwindow = tk.Tk()
+    ChordProgwindow.geometry("500x500")
+
 window = tk.Tk()
 window.geometry("400x250")
 
@@ -68,7 +73,7 @@ tk.Label(text="welcome to theory jack.").pack()
 tk.Label(text="to begin using the program, select one of the two below buttons.").pack()
 CMakerButton = tk.Button(text="Chord Identifier",command=ChordIdent)
 CMakerButton.pack(padx=20, pady=20)
-CProgMakeB = tk.Button(text="Chord Progression Prediction")
+CProgMakeB = tk.Button(text="Chord Progression Prediction",command=ChordProg)
 CProgMakeB.pack(padx=20, pady=20)
 
 
