@@ -2,7 +2,6 @@ from tkinter import *
 import tkinter as tk
 from tkinter import messagebox
 
-# Define musical notes
 Notes = ('C', "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", 'A#', 'B')
 chord = []
 m3rd = 3
