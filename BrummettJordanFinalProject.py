@@ -65,7 +65,6 @@ def findMajorChord(rooN, chor):
                 return True 
     return False  
 
-# Main window
 root = tk.Tk()
 root.geometry("400x250")
 
