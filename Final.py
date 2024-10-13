@@ -60,10 +60,9 @@ def findMajorChord(rooN, chor):
             if (Notes[(i + M3rd) % len(Notes)] == chor[1] and
                     Notes[(i + p5) % len(Notes)] == chor[2]):
                 messagebox.showinfo("Chord", f"That chord is {rooN} Major!")
-                return True  # Return True if a major chord is found
-    return False  # Return False if no chord is found
+                return True  
+    return False  
 
-# Main window
 root = tk.Tk()
 root.geometry("400x250")
 
