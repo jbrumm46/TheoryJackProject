@@ -1,121 +1,75 @@
 from tkinter import *
-from tkinter.ttk import *
 import tkinter as tk
+from tkinter import messagebox
 
-Notes = ('C',"C#","D","D#","E","F","F#","G","G#","A",'A#','B','C',"C#","D","D#","E","F","F#","G","G#","A",'A#','B')
+# Define musical notes
+Notes = ('C', "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", 'A#', 'B')
 chord = []
 m3rd = 3
 M3rd = 4
 p5 = 7
-i = 0
 
-    
 def ChordIdent():
+    chord_window = tk.Toplevel(root)
+    chord_window.geometry("500x500")
+    tk.Label(chord_window, text="*ALL CHORDS WILL BE MADE WITH SHARPS, THIS IDENTIFIER SHALL NOT RECOGNIZE FLATS*").pack()
+    tk.Label(chord_window, text="Select notes to make a chord (up to 3 notes):").pack()
+    tk.Label(chord_window, text="You have selected the notes:").pack()
 
-    root.destroy()
-    ChordIwindow = tk.Tk()
-    ChordIwindow.geometry("500x500")
-    tk.Label(text="*ALL CHORDS WILL BE MADE WITH SHARPS, THIS IDENTIFIER SHALL NOT RECOGNIZE FLATS*").pack()
-    tk.Label(text="select notes,to make a chord (up to 3 notes))").pack()
-    tk.Label(text="You have selected the notes : ").pack()
-    
-    CButton = tk.Button(text="C",command=lambda:showit("C"))
-    CButton.pack()
+    for note in Notes:
+        tk.Button(chord_window, text=note, command=lambda n=note: showit(n)).pack()
 
-    CSharpButton = tk.Button(text="C#",command=lambda:showit("C#"))
-    CSharpButton.pack()
-
-    DButton = tk.Button(text="D",command=lambda:showit("D"))
-    DButton.pack()
-
-    DSharpButton = tk.Button(text="D#",command=lambda:showit("D#"))
-    DSharpButton.pack()
-
-    EButton = tk.Button(text="E",command=lambda:showit("E"))
-    EButton.pack()
-
-    FButton = tk.Button(text="F",command=lambda:showit("F"))
-    FButton.pack()
-
-    FSharpButton = tk.Button(text="F#",command=lambda:showit("F#"))
-    FSharpButton.pack()
-
-    GButton = tk.Button(text="G",command=lambda:showit("G"))
-    GButton.pack()
-
-    GSharpButton = tk.Button(text="G#",command=lambda:showit("G#"))
-    GSharpButton.pack()
-
-    AButton = tk.Button(text="A",command=lambda:showit("A"))
-    AButton.pack()
-
-    ASharpButton = tk.Button(text="A#",command=lambda:showit("A#"))
-    ASharpButton.pack()
-
-    BButton = tk.Button(text="B",command=lambda:showit("B"))
-    BButton.pack()
-
-    WCutton = tk.Button(text="What is this chord?",command=lambda:findChor(chord[0],chord))
-    WCutton.pack()
-
-    RButton = tk.Button(text="Reset Chord List",command=lambda:restart(chord))
-    RButton.pack()
+    tk.Button(chord_window, text="What is this chord?", command=lambda: findChor(chord[0], chord)).pack()
+    tk.Button(chord_window, text="Reset Chord List", command=restart).pack()
 
 def ChordProg():
-    root.destroy()
-    ChordProgwindow = tk.Tk()
-    ChordProgwindow.geometry("500x500")
-
-def findMinorChord(rooN,chor):
-     for i in range(len(Notes)):
-          if Notes[i] == rooN:
-                    if Notes[i+m3rd] == chor[1]:
-                          if Notes[i + p5] == chor[2]:
-                            second_window = tk.Toplevel(ChordIdent)
-                            second_window.title("Chord")
-                            tk.Label(text="That chord is " + rooN + " Major !").pack()
-
-def findMajorChord(rooN,chor):
-     for i in range(len(Notes)):
-          if Notes[i] == rooN:
-                    if Notes[i+M3rd] == chor[1]:
-                          if Notes[i + p5] == chor[2]:
-                            Chordwindow = tk.Tk()
-                            Chordwindow.geometry("300x300")
-                            tk.Label(text="That chord is " + rooN + " Major !").pack()
-
+    chord_prog_window = tk.Toplevel(root)
+    chord_prog_window.geometry("500x500")
+    tk.Label(chord_prog_window, text="Chord Progression Prediction").pack()
 
 def showit(note):
+    if len(chord) < 3:
         chord.append(note)
-        
-def restart(chor):
-        chord.clear()
+        print(f"Selected notes: {chord}")
 
-def findChor(rootN,chor):
-        print(rootN,chor)
-        findMinorChord(rootN,chor)
-        findMajorChord(rootN,chor)
+def restart():
+    chord.clear()
+    print("Chord list reset.")
 
+def findChor(rootN, chor):
+    if len(chor) < 3:
+        messagebox.showwarning("Warning", "Select at least 3 notes to identify a chord.")
+        return
 
+    if not (findMinorChord(rootN, chor) or findMajorChord(rootN, chor)):
+        messagebox.showinfo("Chord Not Found", "No matching chord found. The chord list has been cleared.")
+        restart()
 
+def findMinorChord(rooN, chor):
+    for i in range(len(Notes)):
+        if Notes[i] == rooN:
+            if (Notes[(i + m3rd) % len(Notes)] == chor[1] and
+                    Notes[(i + p5) % len(Notes)] == chor[2]):
+                messagebox.showinfo("Chord", f"That chord is {rooN} Minor!")
+                return True 
+    return False
+
+def findMajorChord(rooN, chor):
+    for i in range(len(Notes)):
+        if Notes[i] == rooN:
+            if (Notes[(i + M3rd) % len(Notes)] == chor[1] and
+                    Notes[(i + p5) % len(Notes)] == chor[2]):
+                messagebox.showinfo("Chord", f"That chord is {rooN} Major!")
+                return True  # Return True if a major chord is found
+    return False  # Return False if no chord is found
+
+# Main window
 root = tk.Tk()
 root.geometry("400x250")
 
-tk.Label(text="welcome to theory jack.").pack()
-tk.Label(text="to begin using the program, select one of the two below buttons.").pack()
-CMakerButton = tk.Button(text="Chord Identifier",command=ChordIdent)
-CMakerButton.pack(padx=20, pady=20)
-CProgMakeB = tk.Button(text="Chord Progression Prediction",command=ChordProg)
-CProgMakeB.pack(padx=20, pady=20)
-
-
-
-
-
-
-
-
-
-
+tk.Label(root, text="Welcome to Theory Jack.").pack()
+tk.Label(root, text="To begin using the program, select one of the two buttons below.").pack()
+tk.Button(root, text="Chord Identifier", command=ChordIdent).pack(padx=20, pady=20)
+tk.Button(root, text="Chord Progression Prediction", command=ChordProg).pack(padx=20, pady=20)
 
 root.mainloop()
